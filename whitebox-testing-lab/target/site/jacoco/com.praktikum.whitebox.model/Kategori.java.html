@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Kategori.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">whitebox-testing-lab</a> &gt; <a href="index.source.html" class="el_package">com.praktikum.whitebox.model</a> &gt; <span class="el_source">Kategori.java</span></div><h1>Kategori.java</h1><pre class="source lang-java linenums">package com.praktikum.whitebox.model;
+
+import java.util.Objects;
+
+public class Kategori {
+
+    // Fields (Atribut)
+    private String kode;
+    private String nama;
+    private String deskripsi;
+    private boolean aktif;
+
+    // Constructor Default
+<span class="fc" id="L14">    public Kategori() {</span>
+        // Default constructor
+<span class="fc" id="L16">    }</span>
+
+    // Constructor dengan Parameter
+<span class="fc" id="L19">    public Kategori(String kode, String nama, String deskripsi) {</span>
+<span class="fc" id="L20">        this.kode = kode;</span>
+<span class="fc" id="L21">        this.nama = nama;</span>
+<span class="fc" id="L22">        this.deskripsi = deskripsi;</span>
+<span class="fc" id="L23">        this.aktif = true; // Kategori baru defaultnya aktif</span>
+<span class="fc" id="L24">    }</span>
+
+    // --- Getters and Setters ---
+
+    public String getKode() {
+<span class="fc" id="L29">        return kode;</span>
+    }
+
+    public void setKode(String kode) {
+<span class="fc" id="L33">        this.kode = kode;</span>
+<span class="fc" id="L34">    }</span>
+
+    public String getNama() {
+<span class="fc" id="L37">        return nama;</span>
+    }
+
+    public void setNama(String nama) {
+<span class="fc" id="L41">        this.nama = nama;</span>
+<span class="fc" id="L42">    }</span>
+
+    public String getDeskripsi() {
+<span class="fc" id="L45">        return deskripsi;</span>
+    }
+
+    public void setDeskripsi(String deskripsi) {
+<span class="fc" id="L49">        this.deskripsi = deskripsi;</span>
+<span class="fc" id="L50">    }</span>
+
+    public boolean isAktif() {
+<span class="fc" id="L53">        return aktif;</span>
+    }
+
+    public void setAktif(boolean aktif) {
+<span class="fc" id="L57">        this.aktif = aktif;</span>
+<span class="fc" id="L58">    }</span>
+
+    // --- Utility Methods (equals, hashCode, toString) ---
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (this == o) return true;</span>
+<span class="fc bfc" id="L65" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="fc" id="L66">        Kategori kategori = (Kategori) o;</span>
+        // Hanya membandingkan berdasarkan kode kategori
+<span class="fc" id="L68">        return Objects.equals(kode, kategori.kode);</span>
+    }
+
+    @Override
+    public int hashCode() {
+        // Hash code hanya berdasarkan kode kategori
+<span class="fc" id="L74">        return Objects.hash(kode);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L79">        return &quot;Kategori{&quot; +</span>
+                &quot;kode='&quot; + kode + '\'' +
+                &quot;, nama='&quot; + nama + '\'' +
+                &quot;, deskripsi='&quot; + deskripsi + '\'' +
+                &quot;, aktif=&quot; + aktif +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

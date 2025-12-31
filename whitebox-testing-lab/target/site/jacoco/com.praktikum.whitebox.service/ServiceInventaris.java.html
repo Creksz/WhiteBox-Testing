@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServiceInventaris.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">whitebox-testing-lab</a> &gt; <a href="index.source.html" class="el_package">com.praktikum.whitebox.service</a> &gt; <span class="el_source">ServiceInventaris.java</span></div><h1>ServiceInventaris.java</h1><pre class="source lang-java linenums">package com.praktikum.whitebox.service;
+
+import com.praktikum.whitebox.model.Produk;
+import com.praktikum.whitebox.repository.RepositoryProduk;
+import com.praktikum.whitebox.util.ValidationUtils;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Kelas layanan (Service) untuk mengelola logika bisnis inventaris produk.
+ * Kelas ini bergantung pada RepositoryProduk untuk operasi data.
+ */
+public class ServiceInventaris {
+
+    private final RepositoryProduk repositoryProduk;
+
+    /**
+     * Constructor dengan Dependency Injection untuk RepositoryProduk.
+     * @param repositoryProduk Implementasi dari RepositoryProduk.
+     */
+<span class="fc" id="L21">    public ServiceInventaris(RepositoryProduk repositoryProduk) {</span>
+<span class="fc" id="L22">        this.repositoryProduk = repositoryProduk;</span>
+<span class="fc" id="L23">    }</span>
+
+    /**
+     * Menambahkan produk baru ke inventaris.
+     * @param produk Objek Produk yang akan ditambahkan.
+     * @return true jika produk berhasil ditambahkan, false jika validasi gagal atau kode produk sudah ada.
+     */
+    public boolean tambahProduk(Produk produk) {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (!ValidationUtils.isValidProduk(produk)) {</span>
+<span class="fc" id="L32">            return false;</span>
+        }
+        // Cek apakah produk dengan kode yang sama sudah ada
+<span class="fc" id="L35">        Optional&lt;Produk&gt; produkExist = repositoryProduk.cariByKode(produk.getKode());</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (produkExist.isPresent()) {</span>
+<span class="fc" id="L37">            return false;</span>
+        }
+<span class="fc" id="L39">        return repositoryProduk.simpan(produk);</span>
+    }
+
+    /**
+     * Menghapus produk berdasarkan kode.
+     * Produk tidak dapat dihapus jika masih memiliki stok &gt; 0.
+     * @param kode Kode produk yang akan dihapus.
+     * @return true jika produk berhasil dihapus, false jika validasi gagal, produk tidak ditemukan, atau stok &gt; 0.
+     */
+    public boolean hapusProduk(String kode) {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (!ValidationUtils.isValidKodeProduk(kode)) {</span>
+<span class="fc" id="L50">            return false;</span>
+        }
+<span class="fc" id="L52">        Optional&lt;Produk&gt; produk = repositoryProduk.cariByKode(kode);</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (produk.isEmpty()) {</span>
+<span class="fc" id="L54">            return false;</span>
+        }
+        // Tidak bisa hapus produk yang masih ada stoknya
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (produk.get().getStok() &gt; 0) {</span>
+<span class="fc" id="L58">            return false;</span>
+        }
+<span class="fc" id="L60">        return repositoryProduk.hapus(kode);</span>
+    }
+
+    /**
+     * Mencari produk berdasarkan kode unik.
+     * @param kode Kode produk.
+     * @return Optional yang berisi Produk jika ditemukan dan valid, atau Optional.empty().
+     */
+    public Optional&lt;Produk&gt; cariProdukByKode(String kode) {
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (!ValidationUtils.isValidKodeProduk(kode)) {</span>
+<span class="fc" id="L70">            return Optional.empty();</span>
+        }
+<span class="fc" id="L72">        return repositoryProduk.cariByKode(kode);</span>
+    }
+
+    public List&lt;Produk&gt; cariProdukByNama(String nama) {
+<span class="fc" id="L76">        return repositoryProduk.cariByNama(nama);</span>
+    }
+
+    public List&lt;Produk&gt; cariProdukByKategori(String kategori) {
+<span class="fc" id="L80">        return repositoryProduk.cariByKategori(kategori);</span>
+    }
+
+    /**
+     * Memperbarui nilai stok produk secara langsung.
+     * @param kode Kode produk.
+     * @param stokBaru Nilai stok yang baru.
+     * @return true jika berhasil diperbarui, false jika validasi gagal atau produk tidak ditemukan.
+     */
+    public boolean updateStok(String kode, int stokBaru) {
+<span class="fc bfc" id="L90" title="All 4 branches covered.">        if (!ValidationUtils.isValidKodeProduk(kode) || stokBaru &lt; 0) {</span>
+<span class="fc" id="L91">            return false;</span>
+        }
+<span class="fc" id="L93">        Optional&lt;Produk&gt; produk = repositoryProduk.cariByKode(kode);</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if (produk.isEmpty()) {</span>
+<span class="fc" id="L95">            return false;</span>
+        }
+<span class="fc" id="L97">        return repositoryProduk.updateStok(kode, stokBaru);</span>
+    }
+
+    /**
+     * Melakukan transaksi pengurangan stok (penjualan/pengambilan).
+     * @param kode Kode produk.
+     * @param jumlah Jumlah yang akan dikeluarkan.
+     * @return true jika stok berhasil dikurangi, false jika validasi gagal, produk tidak aktif/ditemukan, atau stok tidak mencukupi.
+     */
+    public boolean keluarStok(String kode, int jumlah) {
+<span class="fc bfc" id="L107" title="All 4 branches covered.">        if (!ValidationUtils.isValidKodeProduk(kode) || jumlah &lt;= 0) {</span>
+<span class="fc" id="L108">            return false;</span>
+        }
+<span class="fc" id="L110">        Optional&lt;Produk&gt; produkOpt = repositoryProduk.cariByKode(kode);</span>
+<span class="fc bfc" id="L111" title="All 4 branches covered.">        if (produkOpt.isEmpty() || !produkOpt.get().isAktif()) {</span>
+<span class="fc" id="L112">            return false;</span>
+        }
+
+<span class="fc" id="L115">        Produk produk = produkOpt.get();</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (produk.getStok() &lt; jumlah) {</span>
+<span class="fc" id="L117">            return false; // Stok tidak mencukupi</span>
+        }
+
+<span class="fc" id="L120">        int stokBaru = produk.getStok() - jumlah;</span>
+<span class="fc" id="L121">        return repositoryProduk.updateStok(kode, stokBaru);</span>
+    }
+
+    /**
+     * Melakukan transaksi penambahan stok (pembelian/masuk).
+     * @param kode Kode produk.
+     * @param jumlah Jumlah yang akan dimasukkan.
+     * @return true jika stok berhasil ditambahkan, false jika validasi gagal atau produk tidak aktif/ditemukan.
+     */
+    public boolean masukStok(String kode, int jumlah) {
+<span class="fc bfc" id="L131" title="All 4 branches covered.">        if (!ValidationUtils.isValidKodeProduk(kode) || jumlah &lt;= 0) {</span>
+<span class="fc" id="L132">            return false;</span>
+        }
+<span class="fc" id="L134">        Optional&lt;Produk&gt; produk = repositoryProduk.cariByKode(kode);</span>
+<span class="fc bfc" id="L135" title="All 4 branches covered.">        if (produk.isEmpty() || !produk.get().isAktif()) {</span>
+<span class="fc" id="L136">            return false;</span>
+        }
+
+<span class="fc" id="L139">        int stokBaru = produk.get().getStok() + jumlah;</span>
+<span class="fc" id="L140">        return repositoryProduk.updateStok(kode, stokBaru);</span>
+    }
+
+    public List&lt;Produk&gt; getProdukStokMenipis() {
+<span class="fc" id="L144">        return repositoryProduk.cariProdukStokMenipis();</span>
+    }
+
+    public List&lt;Produk&gt; getProdukStokHabis() {
+<span class="fc" id="L148">        return repositoryProduk.cariProdukStokHabis();</span>
+    }
+
+    /**
+     * Menghitung total nilai moneter dari semua inventaris yang aktif.
+     * (Harga * Stok) untuk setiap produk.
+     * @return Total nilai inventaris dalam bentuk double.
+     */
+    public double hitungTotalNilaiInventaris() {
+<span class="fc" id="L157">        List&lt;Produk&gt; semuaProduk = repositoryProduk.cariSemua();</span>
+<span class="fc" id="L158">        return semuaProduk.stream()</span>
+<span class="fc" id="L159">                .filter(Produk::isAktif)</span>
+<span class="fc" id="L160">                .mapToDouble(p -&gt; p.getHarga() * p.getStok())</span>
+<span class="fc" id="L161">                .sum();</span>
+    }
+
+    /**
+     * Menghitung total jumlah unit stok dari semua produk yang aktif.
+     * @return Total stok dalam bentuk integer.
+     */
+    public int hitungTotalStok() {
+<span class="fc" id="L169">        List&lt;Produk&gt; semuaProduk = repositoryProduk.cariSemua();</span>
+<span class="fc" id="L170">        return semuaProduk.stream()</span>
+<span class="fc" id="L171">                .filter(Produk::isAktif)</span>
+<span class="fc" id="L172">                .mapToInt(Produk::getStok)</span>
+<span class="fc" id="L173">                .sum();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

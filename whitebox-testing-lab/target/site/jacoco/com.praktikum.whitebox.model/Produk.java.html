@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Produk.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">whitebox-testing-lab</a> &gt; <a href="index.source.html" class="el_package">com.praktikum.whitebox.model</a> &gt; <span class="el_source">Produk.java</span></div><h1>Produk.java</h1><pre class="source lang-java linenums">package com.praktikum.whitebox.model;
+
+import java.util.Objects;
+
+public class Produk {
+
+    // Fields (Atribut)
+    private String kode;
+    private String nama;
+    private String kategori;
+    private double harga;
+    private int stok;
+    private int stokMinimum;
+    private boolean aktif;
+
+    // Constructor Default
+<span class="fc" id="L17">    public Produk() {</span>
+        // Default constructor
+<span class="fc" id="L19">    }</span>
+
+    // Constructor dengan Parameter
+<span class="fc" id="L22">    public Produk(String kode, String nama, String kategori, double harga, int stok, int stokMinimum) {</span>
+<span class="fc" id="L23">        this.kode = kode;</span>
+<span class="fc" id="L24">        this.nama = nama;</span>
+<span class="fc" id="L25">        this.kategori = kategori;</span>
+<span class="fc" id="L26">        this.harga = harga;</span>
+<span class="fc" id="L27">        this.stok = stok;</span>
+<span class="fc" id="L28">        this.stokMinimum = stokMinimum;</span>
+<span class="fc" id="L29">        this.aktif = true; // Produk baru defaultnya aktif</span>
+<span class="fc" id="L30">    }</span>
+
+    // --- Getters and Setters ---
+
+    public String getKode() {
+<span class="fc" id="L35">        return kode;</span>
+    }
+
+    public void setKode(String kode) {
+<span class="fc" id="L39">        this.kode = kode;</span>
+<span class="fc" id="L40">    }</span>
+
+    public String getNama() {
+<span class="fc" id="L43">        return nama;</span>
+    }
+
+    public void setNama(String nama) {
+<span class="fc" id="L47">        this.nama = nama;</span>
+<span class="fc" id="L48">    }</span>
+
+    public String getKategori() {
+<span class="fc" id="L51">        return kategori;</span>
+    }
+
+    public void setKategori(String kategori) {
+<span class="fc" id="L55">        this.kategori = kategori;</span>
+<span class="fc" id="L56">    }</span>
+
+    public double getHarga() {
+<span class="fc" id="L59">        return harga;</span>
+    }
+
+    public void setHarga(double harga) {
+<span class="fc" id="L63">        this.harga = harga;</span>
+<span class="fc" id="L64">    }</span>
+
+    public int getStok() {
+<span class="fc" id="L67">        return stok;</span>
+    }
+
+    public void setStok(int stok) {
+<span class="fc" id="L71">        this.stok = stok;</span>
+<span class="fc" id="L72">    }</span>
+
+    public int getStokMinimum() {
+<span class="fc" id="L75">        return stokMinimum;</span>
+    }
+
+    public void setStokMinimum(int stokMinimum) {
+<span class="fc" id="L79">        this.stokMinimum = stokMinimum;</span>
+<span class="fc" id="L80">    }</span>
+
+    public boolean isAktif() {
+<span class="fc" id="L83">        return aktif;</span>
+    }
+
+    public void setAktif(boolean aktif) {
+<span class="fc" id="L87">        this.aktif = aktif;</span>
+<span class="fc" id="L88">    }</span>
+
+    // --- Business Logic Methods ---
+
+    /**
+     * Mengecek apakah stok produk sudah habis (sama dengan 0).
+     */
+    public boolean isStokHabis() {
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        return stok == 0;</span>
+    }
+
+    /**
+     * Mengecek apakah stok produk menipis (lebih dari 0 dan kurang dari atau sama dengan stokMinimum).
+     */
+    public boolean isStokMenipis() {
+<span class="fc bfc" id="L103" title="All 4 branches covered.">        return stok &gt; 0 &amp;&amp; stok &lt;= stokMinimum;</span>
+    }
+
+    /**
+     * Mengecek apakah stok produk aman (lebih dari stokMinimum).
+     */
+    public boolean isStokAman() {
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        return stok &gt; stokMinimum;</span>
+    }
+
+    /**
+     * Mengurangi stok produk.
+     * @param jumlah Jumlah yang akan dikurangi.
+     * @throws IllegalArgumentException jika jumlah tidak positif atau stok tidak mencukupi.
+     */
+    public void kurangiStok(int jumlah) {
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (jumlah &lt;= 0) {</span>
+<span class="fc" id="L120">            throw new IllegalArgumentException(&quot;Jumlah harus positif&quot;);</span>
+        }
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (jumlah &gt; stok) {</span>
+<span class="fc" id="L123">            throw new IllegalArgumentException(&quot;Stok tidak mencukupi&quot;);</span>
+        }
+<span class="fc" id="L125">        this.stok -= jumlah;</span>
+<span class="fc" id="L126">    }</span>
+
+    /**
+     * Menambah stok produk.
+     * @param jumlah Jumlah yang akan ditambahkan.
+     * @throws IllegalArgumentException jika jumlah tidak positif.
+     */
+    public void tambahStok(int jumlah) {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        if (jumlah &lt;= 0) {</span>
+<span class="fc" id="L135">            throw new IllegalArgumentException(&quot;Jumlah harus positif&quot;);</span>
+        }
+<span class="fc" id="L137">        this.stok += jumlah;</span>
+<span class="fc" id="L138">    }</span>
+
+    /**
+     * Menghitung total harga untuk sejumlah produk.
+     * @param jumlah Jumlah produk.
+     * @return Total harga.
+     * @throws IllegalArgumentException jika jumlah tidak positif.
+     */
+    public double hitungTotalHarga(int jumlah) {
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        if (jumlah &lt;= 0) {</span>
+<span class="fc" id="L148">            throw new IllegalArgumentException(&quot;Jumlah harus positif&quot;);</span>
+        }
+<span class="fc" id="L150">        return harga * jumlah;</span>
+    }
+
+    // --- Utility Methods ---
+
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L158" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="fc" id="L159">        Produk produk = (Produk) o;</span>
+        // Hanya membandingkan berdasarkan kode produk
+<span class="fc" id="L161">        return Objects.equals(kode, produk.kode);</span>
+    }
+
+    @Override
+    public int hashCode() {
+        // Hash code hanya berdasarkan kode produk
+<span class="fc" id="L167">        return Objects.hash(kode);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L172">        return &quot;Produk{&quot; +</span>
+                &quot;kode='&quot; + kode + '\'' +
+                &quot;, nama='&quot; + nama + '\'' +
+                &quot;, kategori='&quot; + kategori + '\'' +
+                &quot;, harga=&quot; + harga +
+                &quot;, stok=&quot; + stok +
+                &quot;, stokMinimum=&quot; + stokMinimum +
+                &quot;, aktif=&quot; + aktif +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
